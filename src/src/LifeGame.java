@@ -23,7 +23,7 @@ public class LifeGame {
 		length=Integer.parseInt(buffer);
 		
 		// Init a new matrix object
-		earth = new LifeMatrix(width, length);
+		earth = new LifeMatrix(width, length,true);
 		
 		do { // while the result of confirmdialog is 0 play
 			JOptionPane.showMessageDialog(null, earth.toString());
