@@ -25,7 +25,7 @@ public class LifeGame {
 		// Init a new matrix object
 		earth = new LifeMatrix(width, length,true);
 		
-		do { // while the result of confirmdialog is 0 play
+		do { // while the result of confirmdialog is not 1 play
 			JOptionPane.showMessageDialog(null, earth.toString());
 			
 			userChoice=JOptionPane.showOptionDialog(null, "What do you want to do?", "LifeGame",
@@ -33,7 +33,7 @@ public class LifeGame {
 			if (userChoice==2) {
 				earth.RandomizeMatrix();
 			} else if (userChoice==0) {
-				earth.StepGeneration(50);
+				earth.StepGeneration(1);
 			}			
 		} while (userChoice!=1);
 		return;

@@ -22,21 +22,22 @@ public class LifeMatrix {
 			this.RandomizeMatrix();
 	}
 
+	/**
+	 * Returns the width of the matrix
+	 * @return Integer
+	 */
 	public int get_width() {
 		return _width;
 	}
-
-	public void set_width(int _width) {
-		this._width = _width;
-	}
-
+	
+	/**
+	 * Returns the length of the matrix
+	 * @return Integer
+	 */
 	public int get_length() {
 		return _length;
 	}
 
-	public void set_length(int _length) {
-		this._length = _length;
-	}
 
 	public void RandomizeMatrix() {
 		Random randomGenerator = new Random();
@@ -59,7 +60,7 @@ public class LifeMatrix {
 		int livingCount;
 
 		for (int i=0;i<count; i++) {
-			System.out.println("------------ "+i+" ------------");
+			//System.out.println("------------ "+i+" ------------");
 			for (int posLen=0; posLen<_length; posLen++) {// scan the cells
 				for (int posWid=0; posWid<_width; posWid++) {
 					livingCount=LivingAround(posLen, posWid); //check the number of neighbors
@@ -87,7 +88,7 @@ public class LifeMatrix {
 				}
 			}
 			cloneMatrix(tempMatrix); // copy the matrix to this one.
-			System.out.println(this.toString());
+			//System.out.println(this.toString());
 		}
 	}
 
@@ -140,7 +141,7 @@ public class LifeMatrix {
 			}
 			temp+="\n";
 		}
-		temp+= "Population:"+_population+"\n";
+		//temp+= "Population:"+_population+"\n";
 		return temp;
 	}
 
