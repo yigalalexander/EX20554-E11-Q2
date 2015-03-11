@@ -33,7 +33,7 @@ public class LifeGame {
 			if (userChoice==2) {
 				earth.RandomizeMatrix();
 			} else if (userChoice==0) {
-				earth.StepGeneration(1);
+				earth.StepGeneration(50);
 			}			
 		} while (userChoice!=1);
 		return;

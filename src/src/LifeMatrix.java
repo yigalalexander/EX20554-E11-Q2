@@ -7,6 +7,7 @@ public class LifeMatrix {
 	private boolean _matrix[][];
 	private int _width;
 	private int _length;
+	private int _population;
 
 	/**
 	 * @param width Width of the new matrix
@@ -16,6 +17,7 @@ public class LifeMatrix {
 		_matrix = new boolean[width][length];
 		_width=width;
 		_length=length;
+		_population=0;
 		if (doRandom) 
 			this.RandomizeMatrix();
 	}
@@ -41,6 +43,8 @@ public class LifeMatrix {
 		for (int len=0; len<_length; len++) {
 			for (int wid=0; wid<_width; wid++) {
 				_matrix[wid][len]=randomGenerator.nextBoolean();
+				if (_matrix[wid][len]) 
+					_population++;
 			}
 		}
 	}
@@ -55,27 +59,39 @@ public class LifeMatrix {
 		int livingCount;
 
 		for (int i=0;i<count; i++) {
+			System.out.println("------------ "+i+" ------------");
 			for (int posLen=0; posLen<_length; posLen++) {// scan the cells
 				for (int posWid=0; posWid<_width; posWid++) {
 					livingCount=LivingAround(posLen, posWid); //check the number of neighbors
 
 					if (!_matrix[posWid][posLen]) {
-						if (livingCount==3) // no life and 3 Birth?
+						if (livingCount==3) {
+							// no life and 3 Birth?
 							tempMatrix.setAlive(posWid,posLen,true);
+							//System.out.println("Giving birth at "+posWid+"x"+posLen+"\n");
+						} else 
+							tempMatrix.setAlive(posWid, posLen, false);
+
 					} else { 
 
-						if (livingCount<2 && livingCount>3) { // life and <2 or >3 Death
+						if (livingCount<2 || livingCount>3) { // life and <2 or >3 Death
 							tempMatrix.setAlive(posWid,posLen,false);
-						} else
+							//System.out.println("Killing at "+posWid+"x"+posLen+"\n");
+						} else {
 							tempMatrix.setAlive(posWid,posLen,true); // life and 2 or 3? exist
+							//System.out.println("Sustaining at "+posWid+"x"+posLen+"\n");
+						}
+
 					}
 
 				}
 			}
 			cloneMatrix(tempMatrix); // copy the matrix to this one.
+			System.out.println(this.toString());
 		}
-
 	}
+
+
 
 	private void cloneMatrix(LifeMatrix source) {
 
@@ -96,9 +112,15 @@ public class LifeMatrix {
 	}
 
 	private void setAlive(int wid, int len,boolean alive) {
-		// TODO Auto-generated method stub
-		if (wid<=_width && len<=_length) 
+
+		if (wid<=_width && len<=_length) {
 			_matrix[wid][len]=alive;
+			if (alive) 
+				_population++;
+			else
+				_population--;
+		}
+			
 
 	}
 
@@ -118,7 +140,7 @@ public class LifeMatrix {
 			}
 			temp+="\n";
 		}
-
+		temp+= "Population:"+_population+"\n";
 		return temp;
 	}
 
@@ -129,27 +151,26 @@ public class LifeMatrix {
 	 * @return Count of living cells
 	 */
 	private int LivingAround(int r,int c) {
-		int res=0; //sum of living neighbors
-
-		int sum=0; 
+		int res=0; //sum of living neighbors 
 		int boxSize=1; //how further to look for around each cell
 
-		for (int posRow=(r-boxSize); posRow<=(r+boxSize); posRow++) 
+		for (int posLen=(r-boxSize); posLen<=(r+boxSize); posLen++) 
 		{
 
-			if ((posRow>=0)&&(posRow<=get_length()-1)) //run the loop only if the row is in range of rows of the matrix
+			if ((posLen>=0)&&(posLen<=get_length()-1)) //run the loop only if the row is in range of rows of the matrix
 			{ 
-				for (int posCol=(c-boxSize); posCol<=(c+boxSize); posCol++) //check all the neighbors in the column
+				for (int posWid=(c-boxSize); posWid<=(c+boxSize); posWid++) //check all the neighbors in the column
 				{ 
-					if ((posCol>=0)&&(posCol<=get_width()-1)// if the column is in the range of the matrix, check it
-							&& (posCol!=c && posRow!=r)) 	// And is not me
+					if ((posWid>=0)&&(posWid<=get_width()-1)// if the column is in the range of the matrix, check it
+							&& (posWid!=c && posLen!=r)) 	// And is not me
 					{  
-						res+=_matrix[posRow][posCol]?1:0;
+						res+=_matrix[posWid][posLen]?1:0;
 					}
 				}
 			}
 
 		}
+		//System.out.println("At "+r+"x"+c+" there were "+res+" alive\n");
 		return res;
 	}
 
